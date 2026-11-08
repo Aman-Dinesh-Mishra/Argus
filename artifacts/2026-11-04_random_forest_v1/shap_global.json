@@ -1,0 +1,84 @@
+{
+  "explanation_type": "global",
+  "class_explained": 1,
+  "class_name": "fraud",
+  "sample_size": 1500,
+  "method": "mean_absolute_shap",
+  "features": [
+    {
+      "feature": "V12",
+      "mean_abs_shap": 0.07876900694573284,
+      "mean_shap": -0.07849340411267515
+    },
+    {
+      "feature": "V14",
+      "mean_abs_shap": 0.06734859257259143,
+      "mean_shap": -0.06499932674241585
+    },
+    {
+      "feature": "V4",
+      "mean_abs_shap": 0.057853073021419905,
+      "mean_shap": -0.05232184051165744
+    },
+    {
+      "feature": "V10",
+      "mean_abs_shap": 0.05132383365618456,
+      "mean_shap": -0.0496520951169357
+    },
+    {
+      "feature": "V11",
+      "mean_abs_shap": 0.04797307999354265,
+      "mean_shap": -0.04784109142756343
+    },
+    {
+      "feature": "V17",
+      "mean_abs_shap": 0.0413660282197038,
+      "mean_shap": -0.04090979549626741
+    },
+    {
+      "feature": "V16",
+      "mean_abs_shap": 0.025410586272016852,
+      "mean_shap": -0.02431440274624062
+    },
+    {
+      "feature": "V3",
+      "mean_abs_shap": 0.023907131321421336,
+      "mean_shap": -0.020680702417262255
+    },
+    {
+      "feature": "V7",
+      "mean_abs_shap": 0.011936217325371366,
+      "mean_shap": -0.011579974768573396
+    },
+    {
+      "feature": "V1",
+      "mean_abs_shap": 0.011790092925455973,
+      "mean_shap": -0.011790092925455973
+    },
+    {
+      "feature": "V2",
+      "mean_abs_shap": 0.009868032715632502,
+      "mean_shap": -0.00883563685192427
+    },
+    {
+      "feature": "Time",
+      "mean_abs_shap": 0.008033062537705525,
+      "mean_shap": -0.008033062537705525
+    },
+    {
+      "feature": "V18",
+      "mean_abs_shap": 0.007206535075989048,
+      "mean_shap": -0.007194893666958983
+    },
+    {
+      "feature": "V9",
+      "mean_abs_shap": 0.006272416932909739,
+      "mean_shap": -0.00621188875259039
+    },
+    {
+      "feature": "V21",
+      "mean_abs_shap": 0.005387611808240414,
+      "mean_shap": -0.004852388355462167
+    }
+  ]
+}

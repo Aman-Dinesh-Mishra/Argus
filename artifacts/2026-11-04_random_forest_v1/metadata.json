@@ -1,0 +1,75 @@
+{
+  "created_at": "2026-11-04T08:21:55.912806+00:00",
+  "dataset": {
+    "name": "creditcard.csv",
+    "sha256": "76274b691b16a6c49d3f159c883398e03ccd6d1ee12d9d8ee38f4b4b98551a89",
+    "rows": 284807,
+    "columns": 31
+  },
+  "split": {
+    "strategy": "chronological",
+    "time_column": "Time",
+    "ratios": {
+      "train": 0.7,
+      "validation": 0.15,
+      "test": 0.15
+    },
+    "train": {
+      "rows": 199364,
+      "fraud_count": 384,
+      "time_min": 0.0,
+      "time_max": 132928.0
+    },
+    "validation": {
+      "rows": 42721,
+      "fraud_count": 56,
+      "time_min": 132929.0,
+      "time_max": 151328.0
+    },
+    "test": {
+      "rows": 42722,
+      "fraud_count": 52,
+      "time_min": 151328.0,
+      "time_max": 172792.0
+    }
+  },
+  "model": {
+    "name": "RandomForestClassifier",
+    "parameters": {
+      "bootstrap": true,
+      "ccp_alpha": 0.0,
+      "class_weight": "balanced_subsample",
+      "criterion": "gini",
+      "max_depth": 12,
+      "max_features": "sqrt",
+      "max_leaf_nodes": null,
+      "max_samples": null,
+      "min_impurity_decrease": 0.0,
+      "min_samples_leaf": 5,
+      "min_samples_split": 2,
+      "min_weight_fraction_leaf": 0.0,
+      "monotonic_cst": null,
+      "n_estimators": 200,
+      "n_jobs": -1,
+      "oob_score": false,
+      "random_state": 42,
+      "verbose": 0,
+      "warm_start": false
+    }
+  },
+  "threshold_selection": {
+    "selected_threshold": 0.1128755386620629,
+    "selection_dataset": "validation",
+    "missed_fraud_cost": 50,
+    "false_alarm_cost": 1,
+    "validation_cost": 357.0
+  },
+  "library_versions": {
+    "python": "3.13.3",
+    "pandas": "3.0.3",
+    "numpy": "2.4.3",
+    "scikit_learn": "1.9.0",
+    "shap": "0.54.1",
+    "joblib": "1.5.3"
+  }
+}

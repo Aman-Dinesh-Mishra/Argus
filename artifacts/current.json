@@ -1,0 +1,6 @@
+{
+  "artifact_dir": "2026-11-04_random_forest_v1",
+  "model_path": "2026-11-04_random_forest_v1/model.joblib",
+  "metadata_path": "2026-11-04_random_forest_v1/metadata.json",
+  "threshold": 0.1128755386620629
+}
