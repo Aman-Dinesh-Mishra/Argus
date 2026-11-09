@@ -1,5 +1,5 @@
 # ARGUS
-### Intelligent Transaction Fraud Detection & Explainability Platform
+### An Intelligent Transaction Fraud Detection & Explainability Platform
 
 ARGUS is a machine learning-based transaction risk assessment system designed to identify potentially fraudulent transactions, quantify prediction confidence, and explain model decisions through feature-level attribution.
 
