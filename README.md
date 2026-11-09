@@ -39,55 +39,6 @@ flowchart TD
 | Testing | Vitest, Supertest, Pytest |
 | Containerization | Docker |
 
-## Repository Structure
-
-```text
-argus/
-├── app/
-│   ├── server/
-│   │   └── src/
-│   │       ├── clients/
-│   │       ├── errors/
-│   │       ├── middleware/
-│   │       ├── routes/
-│   │       ├── tests/
-│   │       └── validators/
-│   └── web/
-│       └── src/
-│           ├── charts/
-│           ├── components/
-│           ├── hooks/
-│           ├── pages/
-│           ├── services/
-│           └── types/
-├── artifacts/
-├── data/
-│   └── raw/
-├── docs/
-│   ├── decisions/
-│   ├── eval-results/
-│   ├── api-contracts.md
-│   ├── architecture.md
-│   ├── deployments.md
-│   ├── product-brief.md
-│   └── requirements.md
-├── services/
-│   └── risk-engine/
-│       ├── scripts/
-│       ├── src/argus/
-│       ├── tests/
-│       ├── pyproject.toml
-│       └── requirements.lock.txt
-├── tests/
-│   ├── abuse/
-│   ├── e2e/
-│   ├── integration/
-│   └── security/
-├── Dockerfile
-├── start.sh
-└── .dockerignore
-```
-
 ## Machine Learning Pipeline
 
 ARGUS uses a Random Forest classifier trained on transaction-level features.
