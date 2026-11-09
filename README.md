@@ -1,41 +1,45 @@
-# ARGUS — Intelligent Transaction Fraud Detection
+# ARGUS
+### Intelligent Transaction Fraud Detection & Explainability Platform
 
-ARGUS is an ML-powered transaction fraud detection system that predicts transaction risk, classifies transactions into risk bands, and explains predictions using SHAP.
+ARGUS is a machine learning-based transaction risk assessment system designed to identify potentially fraudulent transactions, quantify prediction confidence, and explain model decisions through feature-level attribution.
 
-The project combines a React frontend, a TypeScript Express API gateway, and a Python FastAPI machine learning service.
+The platform follows a modular service architecture, separating the presentation layer, API gateway, and machine learning inference service.
 
-## 1. Architecture
+## System Architecture
 
 ```mermaid
 flowchart TD
-    A[React Frontend] --> B[Express API Gateway]
-    B --> C[FastAPI Risk Engine]
-    C --> D[Random Forest Model]
-    C --> E[SHAP Explainability]
-    C --> F[Evaluation Artifacts]
+    A["React Client"] --> B["Express API Gateway"]
+    B --> C["FastAPI Inference Service"]
+    C --> D["Random Forest Classifier"]
+    C --> E["SHAP Explainability"]
+    C --> F["Model Evaluation Artifacts"]
 ```
 
-### Components
+### Service Responsibilities
 
-| Component           | Responsibility                                     |
-| ------------------- | -------------------------------------------------- |
-| React frontend      | Transaction input and result visualization         |
-| Express gateway     | Validation, routing, rate limiting, error handling |
-| FastAPI risk engine | Model inference and explanations                   |
-| Random Forest       | Fraud probability prediction                       |
-| SHAP                | Feature contribution explanations                  |
+| Service | Responsibility |
+|---|---|
+| Web Client | Transaction submission, prediction visualization, and model evaluation dashboards |
+| API Gateway | Request validation, routing, rate limiting, and centralized error handling |
+| Risk Engine | Feature processing, model inference, and prediction explanations |
+| ML Model | Fraud probability estimation and risk classification |
+| Explainability Layer | Global and transaction-level feature attribution |
 
-## 2. Technology Stack
+## Technology Stack
 
-- Frontend: React, TypeScript, Vite
-- Backend gateway: Node.js, Express, TypeScript
-- Risk engine: Python, FastAPI
-- Machine learning: Scikit-learn
-- Explainability: SHAP
-- Validation: Zod and Pydantic
-- Testing: Vitest, Supertest, Pytest
+| Layer | Technologies |
+|---|---|
+| Frontend | React.js, TypeScript, Vite |
+| API Gateway | Node.js, Express, TypeScript |
+| Inference Service | Python, FastAPI |
+| Machine Learning | Scikit-learn, Random Forest |
+| Explainability | SHAP |
+| Validation | Zod, Pydantic |
+| Testing | Vitest, Supertest, Pytest |
+| Containerization | Docker |
 
-## 3. Repository Structure
+## Repository Structure
 
 ```text
 argus/
@@ -70,91 +74,85 @@ argus/
 ├── services/
 │   └── risk-engine/
 │       ├── scripts/
-│       ├── src/
-│       │   └── argus/
+│       ├── src/argus/
 │       ├── tests/
 │       ├── pyproject.toml
 │       └── requirements.lock.txt
-└── tests/
-    ├── abuse/
-    ├── e2e/
-    ├── integration/
-    └── security/
+├── tests/
+│   ├── abuse/
+│   ├── e2e/
+│   ├── integration/
+│   └── security/
+├── Dockerfile
+├── start.sh
+└── .dockerignore
 ```
 
-## 4. API Endpoints
+## Machine Learning Pipeline
 
-### Express Gateway
+ARGUS uses a Random Forest classifier trained on transaction-level features.
 
-Base URL: `http://localhost:3000`
+**Input schema**
 
-| Method | Endpoint               | Description                 |
-| ------ | ---------------------- | --------------------------- |
-| POST   | `/api/score`           | Score a transaction         |
-| GET    | `/api/metrics`         | Retrieve model metrics      |
-| GET    | `/api/threshold-curve` | Retrieve threshold analysis |
-
-### FastAPI Risk Engine
-
-Base URL: `http://127.0.0.1:8000`
-
-| Method | Endpoint           | Description                 |
-| ------ | ------------------ | --------------------------- |
-| GET    | `/health`          | Check service health        |
-| POST   | `/score`           | Generate a fraud prediction |
-| GET    | `/metrics`         | Retrieve model metrics      |
-| GET    | `/threshold-curve` | Retrieve threshold analysis |
-
-## 5. Transaction Input
-
-The scoring API expects exactly 30 numeric features:
+The scoring interface expects 30 numeric features:
 
 - `Time`
 - `Amount`
 - `V1` through `V28`
 
-Example request:
+**Prediction outputs**
 
-```json
-{
-  "Time": 1000,
-  "Amount": 150.5,
-  "V1": 0.1,
-  "V2": -0.2,
-  "V3": 0.3
-}
-```
+| Field | Description |
+|---|---|
+| `probability` | Estimated fraud probability |
+| `risk_band` | LOW, MEDIUM, or HIGH |
+| `exceeds_threshold` | Indicates whether the selected decision threshold is exceeded |
+| `threshold` | Active classification threshold |
+| `top_contributions` | Feature-level SHAP contributions |
 
-This is only a partial illustration. A valid request must include all 30 features.
+The model produces a probability estimate, while the decision threshold determines whether that estimate exceeds the configured fraud classification boundary.
 
-## 6. Prediction Response
+## API Reference
 
-A successful prediction includes:
+### Express API Gateway
 
-- `probability`: Estimated fraud probability.
-- `risk_band`: LOW, MEDIUM, or HIGH.
-- `exceeds_threshold`: Whether the probability exceeds the selected threshold.
-- `threshold`: Selected decision threshold.
-- `top_contributions`: Important SHAP feature contributions.
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/score` | Transaction risk prediction |
+| GET | `/api/metrics` | Model evaluation metrics |
+| GET | `/api/threshold-curve` | Threshold performance analysis |
+| GET | `/api/shap-global` | Global feature attribution |
 
-## 7. Model Evaluation
+### FastAPI Risk Engine
 
-ARGUS uses a chronological train-validation-test split.
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/health` | Service health check |
+| POST | `/score` | Model inference |
+| GET | `/metrics` | Evaluation metrics |
+| GET | `/threshold-curve` | Threshold analysis |
+| GET | `/shap-global` | Global SHAP explanations |
 
-The final Random Forest model was evaluated once on the sealed test set using a threshold selected from validation data.
+The Express gateway provides the client-facing API boundary, while the FastAPI service encapsulates model inference and explainability operations.
 
-| Metric    | Test Result |
-| --------- | ----------: |
-| PR-AUC    |      0.7686 |
-| ROC-AUC   |      0.9720 |
-| Recall    |      0.7885 |
-| Precision |      0.3832 |
+## Model Evaluation
 
-The test set was not used for model selection or threshold tuning.
+The evaluation pipeline uses a chronological train-validation-test split to preserve temporal ordering and reduce information leakage.
 
-Detailed results: `docs/eval-results/2026-11-04.md`
+The final Random Forest model was evaluated on a held-out test set. The classification threshold was selected using validation data rather than the test set.
 
-## 8. Local Development
+| Metric | Test Result |
+|---|---:|
+| PR-AUC | 0.7686 |
+| ROC-AUC | 0.9720 |
+| Recall | 0.7885 |
+| Precision | 0.3832 |
+
+These metrics describe performance on the evaluated dataset and should not be interpreted as guarantees of real-world fraud detection performance.
+
+Detailed evaluation: [`docs/eval-results/2026-11-04.md`](docs/eval-results/2026-11-04.md)
+
+## Local Development
 
 ### Prerequisites
 
@@ -162,7 +160,7 @@ Detailed results: `docs/eval-results/2026-11-04.md`
 - Python 3.10 or newer
 - Trained model artifacts
 
-### Start the Risk Engine
+### 1. Risk Engine
 
 ```powershell
 cd services/risk-engine
@@ -176,9 +174,9 @@ python -m pip install -e .
 python -m uvicorn argus.serve:app --reload --port 8000
 ```
 
-### Start the Express Gateway
+### 2. API Gateway
 
-Open another terminal:
+In a separate terminal:
 
 ```powershell
 cd app/server
@@ -187,9 +185,9 @@ npm install
 npm run dev
 ```
 
-### Start the Frontend
+### 3. Web Client
 
-Open another terminal:
+In another terminal:
 
 ```powershell
 cd app/web
@@ -198,21 +196,21 @@ npm install
 npm run dev
 ```
 
-Refer to `docs/deployments.md` for configuration and deployment details.
+For environment configuration and deployment procedures, refer to [`docs/deployments.md`](docs/deployments.md).
 
-## 9. Testing
+## Verification & Testing
 
-### Express Gateway
+**API Gateway**
 
 ```powershell
 cd app/server
 
 npm run typecheck
-npm run test
+npm test
 npm run build
 ```
 
-### Python Risk Engine
+**Risk Engine**
 
 ```powershell
 cd services/risk-engine
@@ -220,30 +218,43 @@ cd services/risk-engine
 python -m pytest
 ```
 
-## 10. Current Implementation Status
+**Web Client**
 
-| Component                     | Status                 |
-| ----------------------------- | ---------------------- |
-| Model training and evaluation | Completed              |
-| Threshold selection           | Completed              |
-| SHAP explainability           | Implemented            |
-| FastAPI risk engine           | Implemented            |
-| Express API gateway           | Implemented and tested |
-| React frontend                | Pending                |
-| Frontend integration          | Pending                |
-| End-to-end testing            | Pending                |
-| Production deployment         | Pending                |
+```powershell
+cd app/web
 
-## 11. Documentation
+npm run lint
+npm run build
+```
 
-- `docs/product-brief.md` — Product scope and goals
-- `docs/requirements.md` — Functional and non-functional requirements
-- `docs/architecture.md` — System architecture and component responsibilities
-- `docs/api-contracts.md` — API request and response contracts
-- `docs/deployments.md` — Local setup and deployment guidance
-- `docs/decisions/` — Architecture decision records
-- `docs/eval-results/` — Model evaluation reports
+## Implementation Status
 
-## 12. Disclaimer
+| Area | Status |
+|---|---|
+| Model training and evaluation | Completed |
+| Threshold selection | Completed |
+| SHAP explainability | Implemented |
+| FastAPI inference service | Implemented |
+| Express API gateway | Implemented and tested |
+| React web client | Implemented |
+| Frontend-backend integration | Completed |
+| Containerized deployment | Implemented |
+| End-to-end verification | Deployment integration verified |
 
-ARGUS is an educational and engineering project demonstrating machine learning, API design, and explainability. It is not a certified financial fraud prevention system and should not be used to make real financial decisions without further validation, security review, and operational controls.
+## Engineering Documentation
+
+| Document | Purpose |
+|---|---|
+| `docs/product-brief.md` | Product scope and objectives |
+| `docs/requirements.md` | Functional and non-functional requirements |
+| `docs/architecture.md` | Architecture and service boundaries |
+| `docs/api-contracts.md` | API request and response specifications |
+| `docs/deployments.md` | Environment configuration and deployment procedures |
+| `docs/decisions/` | Architecture decision records |
+| `docs/eval-results/` | Model evaluation reports |
+
+## Limitations & Disclaimer
+
+ARGUS is an educational engineering project demonstrating machine learning, explainable AI, API architecture, and deployment practices.
+
+Its predictions are model-generated risk estimates, not definitive fraud determinations. The system has not been certified or validated for production financial decision-making. Real-world adoption would require additional validation, security assessment, monitoring, reliability controls, and regulatory review.
