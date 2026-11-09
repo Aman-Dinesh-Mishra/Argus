@@ -33,6 +33,7 @@ flowchart LR
 
     UI <-->|"HTTP / JSON"| API
     API <-->|"Internal HTTP / JSON"| SERVICE
+```
 ### Service Responsibilities
 
 | Service | Responsibility |
