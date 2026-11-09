@@ -7,10 +7,10 @@ The platform follows a modular service architecture, separating the presentation
 
 ## System Architecture
 
-ARGUS follows a layered client-server architecture that separates presentation, API orchestration, and machine learning inference.
+ARGUS follows a layered client-server architecture that separates the presentation layer, API gateway, and machine learning inference layer.
 
 ```mermaid
-flowchart TB
+flowchart LR
     subgraph Presentation["Presentation Layer"]
         UI["React Client"]
     end
@@ -20,6 +20,7 @@ flowchart TB
     end
 
     subgraph Inference["Inference Layer"]
+        direction LR
         SERVICE["FastAPI Inference Service"]
         MODEL["Random Forest Classifier"]
         SHAP["SHAP Explainability"]
@@ -32,7 +33,6 @@ flowchart TB
 
     UI <-->|"HTTP / JSON"| API
     API <-->|"Internal HTTP / JSON"| SERVICE
-```
 ### Service Responsibilities
 
 | Service | Responsibility |
