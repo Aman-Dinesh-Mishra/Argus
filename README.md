@@ -16,7 +16,7 @@ The system provides:
 
 ## Architecture
 
-![ARGUS Architecture](docs/images/architecture.png)
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/cdf2eac2-9648-4bd4-ad96-c48fab1bbfb8" />
 
 ### High-Level Flow
 
